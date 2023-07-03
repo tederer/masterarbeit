@@ -8,7 +8,11 @@ https://www.az-delivery.de/products/dht20-digitaler-temperatursensor-und-luftfeu
 
 https://www.mikrocontroller-elektronik.de/wp-content/uploads/delightful-downloads/2015/05/DHT22.pdf
 
-# turning off swapping (Raspberry Pi)
+# Raspberry Pi
+
+https://www.raspberrypi.com/documentation/
+
+## turning off swapping
 
 https://www.elektronik-kompendium.de/sites/raspberry-pi/2002131.htm
 
