@@ -11,3 +11,17 @@ https://www.mikrocontroller-elektronik.de/wp-content/uploads/delightful-download
 # turning off swapping (Raspberry Pi)
 
 https://www.elektronik-kompendium.de/sites/raspberry-pi/2002131.htm
+
+# IR light
+
+## 5 LEDs parallel
+
+1,5V 100 mA
+
+resistor: 3,5 V, 100 mA = 35 Ohm, 0,35 W
+
+## 10 LEDs parallel
+
+1,5V 200 mA
+
+resistor: 3,5V, 200 mA = 17,5 Ohm, 0,7 W
