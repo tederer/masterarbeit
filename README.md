@@ -12,6 +12,10 @@ https://www.mikrocontroller-elektronik.de/wp-content/uploads/delightful-download
 
 https://www.raspberrypi.com/documentation/
 
+## monitoring core temperature
+
+https://www.raspberrypi.com/documentation/computers/config_txt.html#monitoring-core-temperature
+
 ## turning off swapping
 
 https://www.elektronik-kompendium.de/sites/raspberry-pi/2002131.htm
