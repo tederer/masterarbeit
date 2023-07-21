@@ -42,3 +42,8 @@ To use the overlay a customized initramfs needs to get created. The following st
 
 The content of 40_custom was created by copying the default menu entry from /boot/grub/grub.cfg and adding "boot=overlay" at the end of line 20 and changing the image used in line 22 to the one we created our own. 
 
+# References
+
+[https://www.kernel.org/doc/html/latest/filesystems/ramfs-rootfs-initramfs.html](https://www.kernel.org/doc/html/latest/filesystems/ramfs-rootfs-initramfs.html)  
+[https://www.kernel.org/doc/html/latest/driver-api/early-userspace/buffer-format.html](https://www.kernel.org/doc/html/latest/driver-api/early-userspace/buffer-format.html)  
+[https://www.gnu.org/software/grub/manual/grub/](https://www.gnu.org/software/grub/manual/grub/)  
