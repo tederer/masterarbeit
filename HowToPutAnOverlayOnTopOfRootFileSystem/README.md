@@ -21,7 +21,7 @@ To put an overlay on top of the root file system, one more partition is required
     └─sda4   8:4    0  7.1G  0 part
     sr0     11:0    1 1024M  0 rom
    
-The following screenshot contains shows the manual partition configuration in the Debian installation menu. The additional partition is the one called "overlay".
+The following screenshot shows the manual partition configuration in the Debian installation menu. The additional partition is the one called "overlay".
 
 ![](partition_setup_with_partition_for_overlay.jpg)
 
@@ -39,3 +39,6 @@ To use the overlay a customized initramfs needs to get created. The following st
 10. `grub-mkconfig -o /boot/grub/grub.cfg`
 11. Reboot
 12. Select 'Debian GNU/Linux with overlay' in boot menu.
+
+The content of 40_custom was created by copying the default menu entry from /boot/grub/grub.cfg and adding "boot=overlay" at the end of line 20 and changing the image used in line 22 to the one we created our own. 
+
