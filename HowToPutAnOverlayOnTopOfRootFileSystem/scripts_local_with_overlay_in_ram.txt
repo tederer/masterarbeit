@@ -1,0 +1,42 @@
+local_mount_root()
+{
+	local_top
+	if [ -z "${ROOT}" ]; then
+		panic "No root device specified. Boot arguments must include a root= parameter."
+	fi
+	local_device_setup "${ROOT}" "root file system"
+	ROOT="${DEV}"
+
+	# Get the root filesystem type if not set
+	if [ -z "${ROOTFSTYPE}" ] || [ "${ROOTFSTYPE}" = auto ]; then
+		FSTYPE=$(get_fstype "${ROOT}")
+	else
+		FSTYPE=${ROOTFSTYPE}
+	fi
+
+	local_premount
+
+	if [ "${readonly?}" = "y" ]; then
+		roflag=-r
+	else
+		roflag=-w
+	fi
+
+	modprobe ${FSTYPE}
+	
+	checkfs "${ROOT}" root "${FSTYPE}"
+
+	mkdir /lower /upper
+	mount -r -t ${FSTYPE} ${ROOTFLAGS} ${ROOT} /lower
+
+	modprobe overlay || insmod "/lower/lib/modules/$(uname -r)/kernel/fs/overlayfs/overlay.ko"
+
+	# Mount a tmpfs for the overlay in /upper
+	mount -t tmpfs tmpfs /upper
+	mkdir /upper/data /upper/work
+
+	# Mount the final overlay-root in $rootmnt
+	mount -t overlay \
+	   -olowerdir=/lower,upperdir=/upper/data,workdir=/upper/work \
+	   overlay ${rootmnt}
+}

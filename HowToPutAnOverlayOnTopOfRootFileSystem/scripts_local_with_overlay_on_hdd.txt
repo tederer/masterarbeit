@@ -1,0 +1,55 @@
+local_mount_root()
+{
+   local_top
+	if [ -z "${ROOT}" ]; then
+		panic "No root device specified. Boot arguments must include a root= parameter."
+	fi
+	local_device_setup "${ROOT}" "root file system"
+	ROOT="${DEV}"
+
+   # Get the root filesystem type if not set
+	if [ -z "${ROOTFSTYPE}" ] || [ "${ROOTFSTYPE}" = auto ]; then
+		FSTYPE=$(get_fstype "${ROOT}")
+	else
+		FSTYPE=${ROOTFSTYPE}
+	fi
+
+   local_premount
+   modprobe ${FSTYPE}
+   checkfs "${ROOT}" root "${FSTYPE}"
+	
+   echo "setting up overlays ..."
+	local rootMountPath=/readWriteRootMount
+	local overlayMountPath=/overlays
+   local lowerLayerPath=$rootMountPath
+	local upperLayerPath=$overlayMountPath/upperLayer
+	local workDirPath=$overlayMountPath/workDir
+
+	for path in $rootMountPath $overlayMountPath; do
+		echo "ensuring $path exists and is empty ..."
+		[ -d $path ] && rm -rf $path
+		mkdir --parents $path
+	done
+
+	echo "mounting root partition writable in $rootMountPath ..."
+	mount -w -t ${FSTYPE} ${ROOTFLAGS} /dev/sda2 $rootMountPath
+   
+	echo "mounting overlay partition writable in $overlayMountPath ..."
+	mount -w -t ${FSTYPE} /dev/sda4 $overlayMountPath
+   
+	echo "installing overlay kernel module ..."
+	modprobe overlay || insmod "$rootMountPath/lib/modules/$(uname -r)/kernel/fs/overlayfs/overlay.ko"
+
+	for path in $upperLayerPath $workDirPath; do
+		echo "ensuring $path exists and is empty ..."
+		[ -d $path ] && rm -rf $path
+		mkdir --parents $path
+	done
+
+	echo "mounting the upper overlay layer as $rootmnt ..."
+	mount -t overlay \
+	   -olowerdir=$lowerLayerPath,upperdir=$upperLayerPath,workdir=$workDirPath \
+	   overlay ${rootmnt}
+	
+	sleep 2
+}
